@@ -6,14 +6,14 @@ import enum
 from .database import Base
 
 class DeviceVendor(enum.Enum):
-    OPENWRT = "openwrt"
-    CISCO = "cisco"
+    OPENWRT = "OPENWRT"
+    CISCO = "CISCO"
 
 class DeviceStatus(enum.Enum):
-    ONLINE = "online"
-    OFFLINE = "offline"
-    PROVISIONING = "provisioning"
-    ERROR = "error"
+    ONLINE = "ONLINE"
+    OFFLINE = "OFFLINE"
+    PROVISIONING = "PROVISIONING"
+    ERROR = "ERROR"
 
 class Site(Base):
     __tablename__ = "sites"

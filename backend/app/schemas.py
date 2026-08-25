@@ -4,14 +4,14 @@ from datetime import datetime
 from enum import Enum
 
 class DeviceVendor(str, Enum):
-    OPENWRT = "openwrt"
-    CISCO = "cisco"
+    OPENWRT = "OPENWRT"
+    CISCO = "CISCO"
 
 class DeviceStatus(str, Enum):
-    ONLINE = "online"
-    OFFLINE = "offline"
-    PROVISIONING = "provisioning"
-    ERROR = "error"
+    ONLINE = "ONLINE"
+    OFFLINE = "OFFLINE"
+    PROVISIONING = "PROVISIONING"
+    ERROR = "ERROR"
 
 class SiteBase(BaseModel):
     name: str
