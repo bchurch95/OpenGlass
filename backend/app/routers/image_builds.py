@@ -29,6 +29,23 @@ def simulate_build(build_id: int):
     finally:
         db.close()
 
+@router.get("/{build_id}/logs")
+def get_logs(build_id: int, db: Session = Depends(get_db)):
+    build = db.query(models.ImageBuild).filter(models.ImageBuild.id == build_id).first()
+    if not build:
+        return {"logs":[]}
+    logs = [
+        f"[{build.id}] Initialized build for {build.target}",
+        f"[{build.id}] Fetching OpenWrt {build.version}",
+        f"[{build.id}] Applying variant {build.variant or 'default'}",
+        f"[{build.id}] Building image...",
+    ]
+    if build.status == "done":
+        logs.append(f"[{build.id}] Build complete. Artifact: {build.artifact_url}")
+    elif build.status == "building":
+        logs.append(f"[{build.id}] Building in progress...")
+    return {"logs": logs}
+
 @router.get("/")
 def list_builds(db: Session = Depends(get_db)):
     return db.query(models.ImageBuild).all()
