@@ -4,6 +4,7 @@ from ..database import SessionLocal
 from .. import models
 from ..schemas_image import ImageBuildCreate
 import time
+import subprocess
 
 router = APIRouter(prefix="/image-builds", tags=["images"])
 
@@ -26,16 +27,16 @@ def simulate_build(build_id: int):
         build.status = "building"
         append_log(build, f"[{build.id}] Build started for {build.target}")
         db.commit()
-        time.sleep(1)
-        append_log(build, f"[{build.id}] Fetching OpenWrt {build.version}")
-        db.commit()
-        time.sleep(1)
-        append_log(build, f"[{build.id}] Applying variant {build.variant or 'default'}")
-        db.commit()
-        time.sleep(1)
-        append_log(build, f"[{build.id}] Building image...")
-        db.commit()
-        time.sleep(1)
+        # Stub for real builder: replace with actual image builder command
+        cmd = [
+            "bash", "-c",
+            f"echo 'Fetching OpenWrt {build.version}'; sleep 1; echo 'Applying variant {build.variant or 'default'}'; sleep 1; echo 'Building image...'; sleep 1; echo 'Done'"
+        ]
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        for line in proc.stdout:
+            append_log(build, f"[{build.id}] {line.strip()}")
+            db.commit()
+        proc.wait()
         build.status = "done"
         build.artifact_url = f"/artifacts/{build.id}.bin"
         append_log(build, f"[{build.id}] Build complete. Artifact: {build.artifact_url}")
