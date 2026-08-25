@@ -14,6 +14,9 @@ def get_db():
     finally:
         db.close()
 
+def append_log(build: models.ImageBuild, msg: str):
+    build.logs = (build.logs or "") + msg + "\n"
+
 def simulate_build(build_id: int):
     db = SessionLocal()
     try:
@@ -21,10 +24,21 @@ def simulate_build(build_id: int):
         if not build:
             return
         build.status = "building"
+        append_log(build, f"[{build.id}] Build started for {build.target}")
         db.commit()
-        time.sleep(2)
+        time.sleep(1)
+        append_log(build, f"[{build.id}] Fetching OpenWrt {build.version}")
+        db.commit()
+        time.sleep(1)
+        append_log(build, f"[{build.id}] Applying variant {build.variant or 'default'}")
+        db.commit()
+        time.sleep(1)
+        append_log(build, f"[{build.id}] Building image...")
+        db.commit()
+        time.sleep(1)
         build.status = "done"
         build.artifact_url = f"/artifacts/{build.id}.bin"
+        append_log(build, f"[{build.id}] Build complete. Artifact: {build.artifact_url}")
         db.commit()
     finally:
         db.close()
@@ -34,16 +48,7 @@ def get_logs(build_id: int, db: Session = Depends(get_db)):
     build = db.query(models.ImageBuild).filter(models.ImageBuild.id == build_id).first()
     if not build:
         return {"logs":[]}
-    logs = [
-        f"[{build.id}] Initialized build for {build.target}",
-        f"[{build.id}] Fetching OpenWrt {build.version}",
-        f"[{build.id}] Applying variant {build.variant or 'default'}",
-        f"[{build.id}] Building image...",
-    ]
-    if build.status == "done":
-        logs.append(f"[{build.id}] Build complete. Artifact: {build.artifact_url}")
-    elif build.status == "building":
-        logs.append(f"[{build.id}] Building in progress...")
+    logs = (build.logs or "").strip().split("\n")
     return {"logs": logs}
 
 @router.get("/")

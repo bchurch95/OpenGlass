@@ -58,4 +58,5 @@ class ImageBuild(Base):
     variant: Mapped[str | None] = mapped_column(String(128))
     artifact_url: Mapped[str | None] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(32), default="pending")
+    logs: Mapped[str] = mapped_column(Text, default="")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
