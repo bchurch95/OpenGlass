@@ -23,6 +23,11 @@ export default async function DevicePage({params}:{params:{id:string}}) {
       {error ? <p className="text-red-400 mt-4">{error}</p> : !device ? <p>Loading...</p> : (
         <>
           <h1 className="text-2xl font-bold mt-4">{device.hostname}</h1>
+          <div className="mt-4 border-b border-gray-800 flex gap-4">
+            <a className="py-2 border-b-2 border-blue-500" href={`/devices/${device.id}`}>Overview</a>
+            <a className="py-2 text-gray-400 hover:text-white" href={`/devices/${device.id}/config`}>Config</a>
+            <a className="py-2 text-gray-400 hover:text-white" href={`/devices/${device.id}/telemetry`}>Telemetry</a>
+          </div>
           <div className="mt-4 bg-gray-900 rounded p-4 space-y-2">
             <p><strong>ID:</strong> {device.id}</p>
             <p><strong>Vendor:</strong> {device.vendor}</p>

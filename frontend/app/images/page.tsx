@@ -34,7 +34,7 @@ export default async function ImagesPage(){
           </table>
         </div>
       )}
-      <button className="mt-4 bg-blue-600 px-4 py-2 rounded">New Build</button>
+      <a href="/images/new" className="mt-4 inline-block bg-blue-600 px-4 py-2 rounded">New Build</a>
     </AppLayout>
   );
 }
