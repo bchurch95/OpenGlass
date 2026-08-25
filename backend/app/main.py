@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
 from . import models
-from .routers import sites, devices, image_builds, config_versions
+from .routers import sites, devices, image_builds, config_versions, builder_templates
 
 app = FastAPI(title="OpenGlass API", version="0.1.0")
 
@@ -17,6 +17,7 @@ app.include_router(sites.router)
 app.include_router(devices.router)
 app.include_router(image_builds.router)
 app.include_router(config_versions.router)
+app.include_router(builder_templates.router)
 
 @app.on_event("startup")
 def startup():
