@@ -4,6 +4,7 @@ export default function Sidebar(){
       <div className="text-xl font-bold mb-6">OpenGlass</div>
       <nav className="space-y-2">
         <a className="block px-3 py-2 rounded hover:bg-gray-800" href="/">Dashboard</a>
+        <a className="block px-3 py-2 rounded hover:bg-gray-800" href="/topology">Topology</a>
         <a className="block px-3 py-2 rounded hover:bg-gray-800" href="/devices">Devices</a>
         <a className="block px-3 py-2 rounded hover:bg-gray-800" href="/sites">Sites</a>
         <a className="block px-3 py-2 rounded hover:bg-gray-800" href="/images">Images</a>
