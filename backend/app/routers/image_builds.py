@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from ..database import SessionLocal
 from .. import models
 from ..schemas_image import ImageBuildCreate
+from ..builder_templates import BUILDER_TEMPLATES
 import time
 import subprocess
 
@@ -27,10 +28,15 @@ def simulate_build(build_id: int):
         build.status = "building"
         append_log(build, f"[{build.id}] Build started for {build.target}")
         db.commit()
-        # Stub for real builder: replace with actual image builder command
+        template = BUILDER_TEMPLATES.get(build.target.lower(), {})
+        profile = template.get("profile", build.target)
+        packages = ",".join(template.get("packages", []))
+        version = template.get("version", build.version)
+        append_log(build, f"[{build.id}] Using profile {profile}, packages {packages}")
+        db.commit()
         cmd = [
             "bash", "-c",
-            f"echo 'Fetching OpenWrt {build.version}'; sleep 1; echo 'Applying variant {build.variant or 'default'}'; sleep 1; echo 'Building image...'; sleep 1; echo 'Done'"
+            f"echo 'Fetching OpenWrt {version}'; sleep 1; echo 'Applying profile {profile}'; sleep 1; echo 'Installing packages {packages}'; sleep 1; echo 'Building image...'; sleep 1; echo 'Done'"
         ]
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
         for line in proc.stdout:
