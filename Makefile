@@ -1,4 +1,4 @@
-.PHONY: up down logs build restart ps
+.PHONY: up down logs build restart ps agent-info
 
 up:
 	docker compose up -d --build
@@ -17,3 +17,15 @@ restart:
 
 ps:
 	docker compose ps
+
+agent-info:
+	@echo "=== OpenGlass Agent Info ==="
+	@echo ""
+	@echo "Git:"
+	@git -C $(CURDIR) log -1 --oneline
+	@echo ""
+	@echo "Memory:"
+	@cat .pi/MEMORY.md
+	@echo ""
+	@echo "Services:"
+	@docker compose ps --format "table {{.Name}}\t{{.Status}}\t{{.Ports}}"
