@@ -29,9 +29,11 @@ def simulate_build(build_id: int):
         append_log(build, f"[{build.id}] Build started for {build.target}")
         db.commit()
         template = BUILDER_TEMPLATES.get(build.target.lower(), {})
-        profile = template.get("profile", build.target)
-        packages = ",".join(template.get("packages", []))
+        profile = build.profile or template.get("profile", build.target)
+        packages = build.packages or ",".join(template.get("packages", []))
         version = template.get("version", build.version)
+        build.profile = profile
+        build.packages = packages
         append_log(build, f"[{build.id}] Using profile {profile}, packages {packages}")
         db.commit()
         cmd = [

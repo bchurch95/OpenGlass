@@ -56,6 +56,8 @@ class ImageBuild(Base):
     target: Mapped[str] = mapped_column(String(128))
     version: Mapped[str] = mapped_column(String(64))
     variant: Mapped[str | None] = mapped_column(String(128))
+    profile: Mapped[str | None] = mapped_column(String(128))
+    packages: Mapped[str | None] = mapped_column(Text)
     artifact_url: Mapped[str | None] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(32), default="pending")
     logs: Mapped[str] = mapped_column(Text, default="")

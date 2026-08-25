@@ -22,10 +22,13 @@ export default function BuildForm(){
 
   async function handleSubmit(e:React.FormEvent){
     e.preventDefault();
+    const tpl = templates[target];
+    const profile = tpl?.profile || '';
+    const packages = tpl?.packages?.join(',') || '';
     await fetch(`${API_BASE}/image-builds`, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({target, version, variant})
+      body: JSON.stringify({target, version, variant, profile, packages})
     });
     window.location.href='/images';
   }
