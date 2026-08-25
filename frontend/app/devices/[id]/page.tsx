@@ -1,4 +1,5 @@
 import { API_BASE } from '../../config';
+import AppLayout from '../../../components/AppLayout';
 
 export async function generateStaticParams(){
   return [];
@@ -16,23 +17,24 @@ export default async function DevicePage({params}:{params:{id:string}}) {
     error = e.message;
   }
 
-  if(error) return <main style={{padding:24}}><p style={{color:'red'}}>{error}</p><a href="/">Back</a></main>;
-  if(!device) return <main style={{padding:24}}><p>Loading...</p></main>;
-
   return (
-    <main style={{fontFamily:'system-ui', padding:24}}>
-      <a href="/">← Back</a>
-      <h1>{device.hostname}</h1>
-      <ul>
-        <li>ID: {device.id}</li>
-        <li>Vendor: {device.vendor}</li>
-        <li>Model: {device.model}</li>
-        <li>MAC: {device.mac_address}</li>
-        <li>IP: {device.ip_address}</li>
-        <li>Status: {device.status}</li>
-        <li>Site ID: {device.site_id}</li>
-        <li>Last seen: {device.last_seen}</li>
-      </ul>
-    </main>
+    <AppLayout>
+      <a href="/" className="text-blue-400 hover:underline">← Back</a>
+      {error ? <p className="text-red-400 mt-4">{error}</p> : !device ? <p>Loading...</p> : (
+        <>
+          <h1 className="text-2xl font-bold mt-4">{device.hostname}</h1>
+          <div className="mt-4 bg-gray-900 rounded p-4 space-y-2">
+            <p><strong>ID:</strong> {device.id}</p>
+            <p><strong>Vendor:</strong> {device.vendor}</p>
+            <p><strong>Model:</strong> {device.model}</p>
+            <p><strong>MAC:</strong> {device.mac_address}</p>
+            <p><strong>IP:</strong> {device.ip_address}</p>
+            <p><strong>Status:</strong> {device.status}</p>
+            <p><strong>Site ID:</strong> {device.site_id}</p>
+            <p><strong>Last seen:</strong> {device.last_seen}</p>
+          </div>
+        </>
+      )}
+    </AppLayout>
   );
 }

@@ -1,4 +1,5 @@
 import { API_BASE } from './config';
+import AppLayout from '../components/AppLayout';
 
 async function fetchJSON(path:string){
   const res = await fetch(`${API_BASE}${path}`, { cache: 'no-store' });
@@ -20,26 +21,30 @@ export default async function Page() {
   }
 
   return (
-    <main style={{fontFamily:'system-ui', padding:24}}>
-      <h1>OpenGlass</h1>
-      {error && <p style={{color:'red'}}>Error loading data: {error}</p>}
-      <section>
-        <h2>Sites</h2>
+    <AppLayout>
+      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+      {error && <p className="text-red-400 mb-4">Error loading data: {error}</p>}
+      <section className="mb-8">
+        <h2 className="text-xl mb-3">Sites</h2>
         {!sites.length ? <p>Loading...</p> : (
-          <ul>
-            {sites.map((s:any)=> <li key={s.id}>{s.name} - {s.description}</li>)}
+          <ul className="space-y-2">
+            {sites.map((s:any)=> (
+              <li key={s.id} className="bg-gray-900 rounded px-4 py-2">{s.name} - {s.description}</li>
+            ))}
           </ul>
         )}
       </section>
       <section>
-        <h2>Devices</h2>
+        <h2 className="text-xl mb-3">Devices</h2>
         {!devices.length ? <p>Loading...</p> : (
-          <table border={1} cellPadding={8}>
-            <thead><tr><th>Hostname</th><th>Vendor</th><th>Model</th><th>Status</th></tr></thead>
+          <table className="w-full text-sm">
+            <thead className="text-left border-b border-gray-800">
+              <tr><th className="py-2">Hostname</th><th>Vendor</th><th>Model</th><th>Status</th></tr>
+            </thead>
             <tbody>
               {devices.map((d:any)=>(
-                <tr key={d.id}>
-                  <td><a href={`/devices/${d.id}`}>{d.hostname}</a></td>
+                <tr key={d.id} className="border-b border-gray-800">
+                  <td className="py-2"><a className="text-blue-400 hover:underline" href={`/devices/${d.id}`}>{d.hostname}</a></td>
                   <td>{d.vendor}</td>
                   <td>{d.model}</td>
                   <td>{d.status}</td>
@@ -49,6 +54,6 @@ export default async function Page() {
           </table>
         )}
       </section>
-    </main>
+    </AppLayout>
   );
 }
