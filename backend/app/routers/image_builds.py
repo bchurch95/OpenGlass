@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, BackgroundTasks
+from fastapi import APIRouter, Depends, BackgroundTasks, HTTPException
 from sqlalchemy.orm import Session
 from ..database import SessionLocal
 from .. import models
@@ -56,8 +56,10 @@ def simulate_build(build_id: int):
 def get_logs(build_id: int, db: Session = Depends(get_db)):
     build = db.query(models.ImageBuild).filter(models.ImageBuild.id == build_id).first()
     if not build:
-        return {"logs":[]}
+        raise HTTPException(status_code=404, detail="Build not found")
     logs = (build.logs or "").strip().split("\n")
+    # filter empty strings
+    logs = [l for l in logs if l]
     return {"logs": logs}
 
 @router.get("/")
