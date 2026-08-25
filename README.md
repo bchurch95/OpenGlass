@@ -9,7 +9,7 @@ cd OpenGlass
 docker compose up --build
 ```
 
-API: http://localhost:8000
+API: http://localhost:8080
 Frontend: http://localhost:3000
 
 ## Structure
