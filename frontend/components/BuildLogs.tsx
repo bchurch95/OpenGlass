@@ -15,8 +15,11 @@ export default function BuildLogs({buildId}:{buildId:number}){
     return ()=>clearInterval(id);
   },[buildId]);
   return (
-    <pre className="bg-black text-green-300 p-3 rounded text-xs h-48 overflow-auto">
-      {logs.join('\n')}
-    </pre>
+    <div className="rounded-xl border border-white/10 bg-black/70 p-3">
+      <div className="text-xs text-gray-400 mb-2">Build logs • auto-refresh</div>
+      <pre className="text-green-300 text-xs h-48 overflow-auto leading-relaxed font-mono">
+        {logs.length ? logs.join('\n') : 'No logs yet...'}
+      </pre>
+    </div>
   );
 }

@@ -19,24 +19,36 @@ export default async function DevicePage({params}:{params:{id:string}}) {
 
   return (
     <AppLayout>
-      <a href="/" className="text-blue-400 hover:underline">← Back</a>
-      {error ? <p className="text-red-400 mt-4">{error}</p> : !device ? <p>Loading...</p> : (
+      <a href="/devices" className="text-cyan-300 hover:underline">← Back to devices</a>
+      {error ? <p className="text-red-400 mt-4">{error}</p> : !device ? <p className="text-gray-500 mt-4">Loading...</p> : (
         <>
-          <h1 className="text-2xl font-bold mt-4">{device.hostname}</h1>
-          <div className="mt-4 border-b border-gray-800 flex gap-4">
-            <a className="py-2 border-b-2 border-blue-500" href={`/devices/${device.id}`}>Overview</a>
+          <div className="flex items-center justify-between mt-4">
+            <h1 className="text-3xl font-bold">{device.hostname}</h1>
+            <span className={`px-3 py-1 rounded-full text-sm border ${String(device.status).toUpperCase()==='ONLINE'?'border-emerald-700/50 bg-emerald-900/40 text-emerald-200':'border-gray-700 bg-gray-800 text-gray-300'}`}>{device.status}</span>
+          </div>
+          <div className="mt-4 border-b border-white/10 flex gap-6">
+            <a className="py-2 border-b-2 border-cyan-400 text-cyan-300" href={`/devices/${device.id}`}>Overview</a>
             <a className="py-2 text-gray-400 hover:text-white" href={`/devices/${device.id}/config`}>Config</a>
             <a className="py-2 text-gray-400 hover:text-white" href={`/devices/${device.id}/telemetry`}>Telemetry</a>
           </div>
-          <div className="mt-4 bg-gray-900 rounded p-4 space-y-2">
-            <p><strong>ID:</strong> {device.id}</p>
-            <p><strong>Vendor:</strong> {device.vendor}</p>
-            <p><strong>Model:</strong> {device.model}</p>
-            <p><strong>MAC:</strong> {device.mac_address}</p>
-            <p><strong>IP:</strong> {device.ip_address}</p>
-            <p><strong>Status:</strong> {device.status}</p>
-            <p><strong>Site ID:</strong> {device.site_id}</p>
-            <p><strong>Last seen:</strong> {device.last_seen}</p>
+          <div className="mt-6 grid md:grid-cols-2 gap-4">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+              <div className="text-sm text-gray-400 mb-2">Details</div>
+              <div className="space-y-2 text-sm">
+                <div><span className="text-gray-500">ID</span> <span className="ml-2 font-mono">{device.id}</span></div>
+                <div><span className="text-gray-500">Vendor</span> <span className="ml-2">{device.vendor}</span></div>
+                <div><span className="text-gray-500">Model</span> <span className="ml-2">{device.model}</span></div>
+                <div><span className="text-gray-500">MAC</span> <span className="ml-2 font-mono">{device.mac_address}</span></div>
+                <div><span className="text-gray-500">IP</span> <span className="ml-2 font-mono">{device.ip_address}</span></div>
+                <div><span className="text-gray-500">Site ID</span> <span className="ml-2">{device.site_id}</span></div>
+                <div><span className="text-gray-500">Last seen</span> <span className="ml-2">{device.last_seen}</span></div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+              <div className="text-sm text-gray-400 mb-2">Status</div>
+              <div className="text-lg">Device is {device.status.toLowerCase()}.</div>
+              <div className="mt-4 text-xs text-gray-500">OpenGlass • One plane of glass</div>
+            </div>
           </div>
         </>
       )}
